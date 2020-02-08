@@ -45,7 +45,6 @@ module.exports = {
   },
 
   prepare: async (pluginConfig, context) => {
-    console.log(context);
     await semanticReleaseNpm.prepare(noPublishNpmConfig(pluginConfig), configure(context))
     await semanticReleaseGit.prepare(pluginConfig, context);
   },
