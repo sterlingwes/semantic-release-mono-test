@@ -11,7 +11,19 @@
   "repository": "https://github.com/sterlingwes/semantic-release-mono-test",
   "license": "MIT",
   "devDependencies": {
+    "commitizen": "^4.0.3",
+    "husky": "^4.2.1",
     "semantic-release": "^17.0.2",
     "semantic-release-monorepo": "^7.0.0"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
