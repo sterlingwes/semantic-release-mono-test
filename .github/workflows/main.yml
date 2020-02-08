@@ -37,3 +37,5 @@ jobs:
 
     - name: Perform semantic release
       run: yarn semantic-release -e semantic-release-monorepo
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
