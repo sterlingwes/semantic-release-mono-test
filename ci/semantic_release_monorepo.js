@@ -1,16 +1,21 @@
 const semanticReleaseNpm = require('@semantic-release/npm')
 const semanticReleaseGit = require('@semantic-release/git')
-const monorepoConfig = require('semantic-release-monorepo')
+const {analyzeCommits, generateNotes, tagFormat} = require('semantic-release-monorepo')
 
 const noPublishNpmConfig = (pluginConfig) => ({
   ...pluginConfig,
   npmPublish: false
 })
 
-const noPublishContext = (context) => ({
+const configure = (context) => ({
   ...context,
   options: {
     ...context.options || {},
+    prepare: [
+      {
+        path: '@semantic-release/git'
+      }
+    ],
     publish: [
       {
         path: '@semantic-release/npm',
@@ -30,23 +35,25 @@ const noPublishContext = (context) => ({
  */
 
 module.exports = {
-  ...monorepoConfig,
+  analyzeCommits,
+  generateNotes,
+  tagFormat,
 
   verifyConditions: async (pluginConfig, context) => {
     semanticReleaseGit.verifyConditions(pluginConfig, context);
-    await semanticReleaseNpm.verifyConditions(noPublishNpmConfig(pluginConfig), noPublishContext(context))
+    await semanticReleaseNpm.verifyConditions(noPublishNpmConfig(pluginConfig), configure(context))
   },
 
   prepare: async (pluginConfig, context) => {
+    await semanticReleaseNpm.prepare(noPublishNpmConfig(pluginConfig), configure(context))
     await semanticReleaseGit.prepare(pluginConfig, context);
-    await semanticReleaseNpm.prepare(noPublishNpmConfig(pluginConfig), noPublishContext(context))
   },
 
   publish: async (pluginConfig, context) => {
-    await semanticReleaseNpm.publish(noPublishNpmConfig(pluginConfig), noPublishContext(context))
+    await semanticReleaseNpm.publish(noPublishNpmConfig(pluginConfig), configure(context))
   },
 
   addChannel: async (pluginConfig, context) => {
-    await semanticReleaseNpm.addChannel(noPublishNpmConfig(pluginConfig), noPublishContext(context))
+    await semanticReleaseNpm.addChannel(noPublishNpmConfig(pluginConfig), configure(context))
   },
 }
