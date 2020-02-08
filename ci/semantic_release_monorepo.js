@@ -11,11 +11,6 @@ const configure = (context) => ({
   ...context,
   options: {
     ...context.options || {},
-    prepare: [
-      {
-        path: '@semantic-release/git'
-      }
-    ],
     publish: [
       {
         path: '@semantic-release/npm',
