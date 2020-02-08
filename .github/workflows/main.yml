@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Decrypt deploy key
-      run: ./ci/action_deploy_key_decrypt.sh
+      run: ./action_deploy_key_decrypt.sh
       working-directory: ./ci
       env:
         DEPLOY_KEY_PASS: ${{ secrets.DEPLOY_KEY_PASS }}
