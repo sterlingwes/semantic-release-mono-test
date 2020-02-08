@@ -8,7 +8,7 @@
   ],
   "description": "Test monorepo for semantic release",
   "main": "index.js",
-  "repository": "https://github.com/sterlingwes/semantic-release-mono-test",
+  "repository": "git@github.com:sterlingwes/semantic-release-mono-test.git",
   "license": "MIT",
   "devDependencies": {
     "commitizen": "^4.0.3",
