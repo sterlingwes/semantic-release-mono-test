@@ -1,0 +1,8 @@
+{
+  "name": "@sterlingwes/some-package",
+  "version": "1.0.0",
+  "description": "Some package in my monorepo",
+  "main": "index.js",
+  "repository": "https://github.com/sterlingwes/semantic-release-mono-test",
+  "license": "MIT"
+}
