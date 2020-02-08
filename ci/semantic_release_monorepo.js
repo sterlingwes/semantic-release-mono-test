@@ -1,7 +1,12 @@
 const semanticReleaseNpm = require('@semantic-release/npm')
 const monorepoConfig = require('semantic-release-monorepo')
 
-const addNoPublish = (context) => ({
+const noPublishNpmConfig = (pluginConfig) => ({
+  ...pluginConfig,
+  npmPublish: false
+})
+
+const noPublishContext = (context) => ({
   ...context,
   options: {
     ...context.options || {},
@@ -18,18 +23,18 @@ module.exports = {
   ...monorepoConfig,
 
   verifyConditions: async (pluginConfig, context) => {
-    await semanticReleaseNpm.verifyConditions(pluginConfig, addNoPublish(context))
+    await semanticReleaseNpm.verifyConditions(noPublishNpmConfig(pluginConfig), noPublishContext(context))
   },
 
   prepare: async (pluginConfig, context) => {
-    await semanticReleaseNpm.prepare(pluginConfig, addNoPublish(context))
+    await semanticReleaseNpm.prepare(noPublishNpmConfig(pluginConfig), noPublishContext(context))
   },
 
   publish: async (pluginConfig, context) => {
-    await semanticReleaseNpm.publish(pluginConfig, addNoPublish(context))
+    await semanticReleaseNpm.publish(noPublishNpmConfig(pluginConfig), noPublishContext(context))
   },
 
   addChannel: async (pluginConfig, context) => {
-    await semanticReleaseNpm.addChannel(pluginConfig, addNoPublish(context))
+    await semanticReleaseNpm.addChannel(noPublishNpmConfig(pluginConfig), noPublishContext(context))
   },
 }
