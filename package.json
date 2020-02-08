@@ -18,9 +18,12 @@
     "semantic-release": "^17.0.2",
     "semantic-release-monorepo": "^7.0.0"
   },
+  "scripts": {
+    "commit-prompt": "exec < /dev/tty && git cz --hook"
+  },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS || exec < /dev/tty && git cz --hook"
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS || yarn commit-prompt"
     }
   },
   "config": {
