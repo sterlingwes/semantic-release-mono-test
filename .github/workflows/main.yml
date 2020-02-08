@@ -39,6 +39,6 @@ jobs:
       run: yarn install
 
     - name: Perform semantic release
-      run: yarn workspaces run semantic-release -e "$GITHUB_WORKSPACE/ci/semantic_release_monorepo.js"
+      run: DEBUG=semantic-release:monorepo yarn workspaces run semantic-release -e "$GITHUB_WORKSPACE/ci/semantic_release_monorepo.js"
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
