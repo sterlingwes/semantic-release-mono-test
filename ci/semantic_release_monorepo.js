@@ -1,4 +1,5 @@
 const semanticReleaseNpm = require('@semantic-release/npm')
+const semanticReleaseGit = require('@semantic-release/git')
 const monorepoConfig = require('semantic-release-monorepo')
 
 const noPublishNpmConfig = (pluginConfig) => ({
@@ -19,14 +20,25 @@ const noPublishContext = (context) => ({
   }
 })
 
+/**
+ * default semantic-release plugins:
+ * 
+ * @semantic-release/commit-analyzer
+ * @semantic-release/release-notes-generator
+ * @semantic-release/npm
+ * @semantic-release/github
+ */
+
 module.exports = {
   ...monorepoConfig,
 
   verifyConditions: async (pluginConfig, context) => {
+    semanticReleaseGit.verifyConditions(pluginConfig, context);
     await semanticReleaseNpm.verifyConditions(noPublishNpmConfig(pluginConfig), noPublishContext(context))
   },
 
   prepare: async (pluginConfig, context) => {
+    await semanticReleaseGit.prepare(pluginConfig, context);
     await semanticReleaseNpm.prepare(noPublishNpmConfig(pluginConfig), noPublishContext(context))
   },
 
