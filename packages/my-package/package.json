@@ -1,6 +1,6 @@
 {
   "name": "@sterlingwes/my-package",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Some package in my monorepo",
   "main": "index.js",
   "repository": "git@github.com:sterlingwes/semantic-release-mono-test.git",
