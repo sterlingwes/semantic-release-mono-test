@@ -34,10 +34,13 @@ const branchBuild = !!process.env.SEMANTIC_RELEASE_PR;
  * @semantic-release/github
  */
 
+console.log('branch build config:', branchBuild);
+
 module.exports = {
   analyzeCommits: async (pluginConfig, context) => {
     await analyzeCommits(pluginConfig, context);
     if (branchBuild) {
+      console.log('analyzing commits for branch build');
       await semanticReleasePrNotes.analyzeCommits(pluginConfig, context);
     }
   },
