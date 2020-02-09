@@ -59,7 +59,8 @@ module.exports = {
   generateNotes: async (pluginConfig, context) => {
     const results = await executeSteps(generateNotes, pluginConfig, context);
     if (branchBuild) {
-      await semanticReleasePrNotes.impl.generateNotes(pluginConfig, context, results);
+      const resolvedResults = await Promise.all(results);
+      await semanticReleasePrNotes.impl.generateNotes(pluginConfig, context, resolvedResults);
     }
   },
 
