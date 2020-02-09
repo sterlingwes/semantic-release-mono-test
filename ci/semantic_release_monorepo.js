@@ -51,7 +51,6 @@ module.exports = {
     const results = await executeSteps(analyzeCommits, pluginConfig, context);
     const resolvedResults = await Promise.all(results);
     if (branchBuild) {
-      console.log('>> resolved results', resolvedResults);
       await semanticReleasePrNotes.impl.analyzeCommits(pluginConfig, context, resolvedResults);
     }
 
@@ -61,11 +60,12 @@ module.exports = {
 
   generateNotes: async (pluginConfig, context) => {
     const results = await executeSteps(generateNotes, pluginConfig, context);
+    const resolvedResults = await Promise.all(results);
     if (branchBuild) {
-      const resolvedResults = await Promise.all(results);
-      console.log('>> resolved notes results', resolvedResults);
       await semanticReleasePrNotes.impl.generateNotes(pluginConfig, context, resolvedResults);
     }
+    const [notes] = resolvedResults.filter(notes => !!notes);
+    return notes;
   },
 
   tagFormat,
