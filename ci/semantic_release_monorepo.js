@@ -1,6 +1,7 @@
 const semanticReleaseNpm = require('@semantic-release/npm')
 const semanticReleaseGit = require('@semantic-release/git')
 const semanticReleaseGithub = require('@semantic-release/github')
+const semanticReleaseChanelog = require('@semantic-release/changelog')
 const {analyzeCommits, generateNotes, tagFormat} = require('semantic-release-monorepo')
 
 const noPublishNpmConfig = (pluginConfig) => ({
@@ -37,11 +38,13 @@ module.exports = {
 
   verifyConditions: async (pluginConfig, context) => {
     semanticReleaseGit.verifyConditions(pluginConfig, context);
+    await semanticReleaseChanelog.verifyConditions(pluginConfig, context);
     await semanticReleaseNpm.verifyConditions(noPublishNpmConfig(pluginConfig), configure(context))
     await semanticReleaseGithub.verifyConditions(pluginConfig, context);
   },
 
   prepare: async (pluginConfig, context) => {
+    await semanticReleaseChanelog.prepare(pluginConfig, context);
     await semanticReleaseNpm.prepare(noPublishNpmConfig(pluginConfig), configure(context))
     await semanticReleaseGit.prepare(pluginConfig, context);
   },
