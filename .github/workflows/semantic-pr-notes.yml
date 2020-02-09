@@ -31,7 +31,7 @@ jobs:
 
     - name: Perform semantic release
       run: |
-        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD | tr -d '\n')
+        BRANCH_NAME=$(echo $GITHUB_REF | sed 's/refs\/heads\///g' | tr -d '\n')
         SEMANTIC_RELEASE_PR=1 yarn workspaces run semantic-release \
           --no-ci \
           --dry-run \
