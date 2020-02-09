@@ -31,8 +31,7 @@ jobs:
 
     - name: Perform semantic release
       run: |
-        BRANCH_NAME=$(git show -s --pretty=%d HEAD | egrep -o 'origin\/[a-zA-Z\-]+' | sed 's/origin\///g' | tr -d '\n')
-        echo "$BRANCH_NAME"
+        BRANCH_NAME=$(echo "$GITHUB_HEAD_REF" | sed 's/refs\/heads\///g' | tr -d '\n')
         SEMANTIC_RELEASE_PR=1 yarn workspaces run semantic-release \
           --no-ci \
           --dry-run \
