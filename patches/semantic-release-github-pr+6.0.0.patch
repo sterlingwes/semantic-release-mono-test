@@ -1,10 +1,10 @@
 diff --git a/node_modules/semantic-release-github-pr/src/index.js b/node_modules/semantic-release-github-pr/src/index.js
-index 6c1e780..9834141 100644
+index 6c1e780..3969a8c 100644
 --- a/node_modules/semantic-release-github-pr/src/index.js
 +++ b/node_modules/semantic-release-github-pr/src/index.js
 @@ -101,4 +101,5 @@ module.exports = {
    verifyConditions: '@semantic-release/github',
    analyzeCommits: appendStep('analyzeCommits', decoratePlugin(analyzeCommits)),
    generateNotes: appendStep('generateNotes', decoratePlugin(generateNotes)),
-+  impl: { analyzeCommits, generateNotes }
++  impl: { analyzeCommits: decoratePlugin(analyzeCommits), generateNotes: decoratePlugin(generateNotes) }
  };
