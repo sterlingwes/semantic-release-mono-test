@@ -59,9 +59,6 @@ module.exports = {
     await semanticReleaseChanelog.verifyConditions(pluginConfig, context);
     await semanticReleaseNpm.verifyConditions(noPublishNpmConfig(pluginConfig), configure(context));
     await semanticReleaseGithub.verifyConditions(pluginConfig, context);
-    if (branchBuild) {
-      await semanticReleasePrNotes.verifyConditions(pluginConfig, context);
-    }
   },
 
   prepare: async (pluginConfig, context) => {
