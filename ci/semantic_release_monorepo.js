@@ -36,9 +36,16 @@ const branchBuild = !!process.env.SEMANTIC_RELEASE_PR;
 
 console.log('branch build config:', branchBuild);
 
+const executeSteps = (asyncSteps, pluginConfig, context) =>
+  asyncSteps.reduce(
+    (chain, step) => chain.then(() => step(pluginConfig, context)),
+    Promise.resolve(),
+  );
+
 module.exports = {
   analyzeCommits: async (pluginConfig, context) => {
-    await analyzeCommits(pluginConfig, context);
+    await executeSteps(analyzeCommits, pluginConfig, context);
+
     if (branchBuild) {
       console.log('analyzing commits for branch build');
       await semanticReleasePrNotes.impl.analyzeCommits(pluginConfig, context);
@@ -46,7 +53,8 @@ module.exports = {
   },
 
   generateNotes: async (pluginConfig, context) => {
-    await generateNotes(pluginConfig, context);
+    await executeSteps(generateNotes, pluginConfig, context);
+
     if (branchBuild) {
       await semanticReleasePrNotes.impl.generateNotes(pluginConfig, context);
     }
