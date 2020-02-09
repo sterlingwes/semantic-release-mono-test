@@ -50,7 +50,7 @@ module.exports = {
   analyzeCommits: async (pluginConfig, context) => {
     const results = await executeSteps(analyzeCommits, pluginConfig, context);
     if (branchBuild) {
-      const resolvedResults = await Promise.all(result);
+      const resolvedResults = await Promise.all(results);
       console.log('>> resolved results', resolvedResults);
       await semanticReleasePrNotes.impl.analyzeCommits(pluginConfig, context, resolvedResults);
     }
