@@ -49,11 +49,14 @@ const executeSteps = (asyncSteps, pluginConfig, context) =>
 module.exports = {
   analyzeCommits: async (pluginConfig, context) => {
     const results = await executeSteps(analyzeCommits, pluginConfig, context);
+    const resolvedResults = await Promise.all(results);
     if (branchBuild) {
-      const resolvedResults = await Promise.all(results);
       console.log('>> resolved results', resolvedResults);
       await semanticReleasePrNotes.impl.analyzeCommits(pluginConfig, context, resolvedResults);
     }
+
+    const [releaseType] = resolvedResults.filter(releaseType => !!releaseType);
+    return releaseType;
   },
 
   generateNotes: async (pluginConfig, context) => {
