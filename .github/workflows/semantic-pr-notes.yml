@@ -1,0 +1,35 @@
+name: Semantic Release PR Notes
+
+on: pull_request
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Get yarn cache path
+      id: yarn-cache
+      run: echo "::set-output name=dir::$(yarn cache dir)"
+
+    - name: Cache node modules
+      uses: actions/cache@v1
+      env:
+        cache-name: cache-node-modules
+      with:
+        path: ${{ steps.yarn-cache.outputs.dir }}
+        key: ${{ runner.os }}-yarn-${{ env.cache-name }}-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-yarn-${{ env.cache-name }}-
+          ${{ runner.os }}-yarn-
+          ${{ runner.os }}-
+
+    - name: Install node_modules
+      run: yarn install
+
+    - name: Perform semantic release
+      run: yarn workspaces run semantic-release -e semantic-release-github-pr
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

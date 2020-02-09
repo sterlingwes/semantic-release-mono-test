@@ -21,6 +21,7 @@
     "husky": "^4.2.1",
     "patch-package": "^6.2.0",
     "semantic-release": "^16.0.0",
+    "semantic-release-github-pr": "^6.0.0",
     "semantic-release-monorepo": "^7.0.0"
   },
   "scripts": {
