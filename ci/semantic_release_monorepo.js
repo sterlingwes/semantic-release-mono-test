@@ -41,14 +41,14 @@ module.exports = {
     await analyzeCommits(pluginConfig, context);
     if (branchBuild) {
       console.log('analyzing commits for branch build');
-      await semanticReleasePrNotes.analyzeCommits(pluginConfig, context);
+      await semanticReleasePrNotes.analyzeCommits.pop()(pluginConfig, context);
     }
   },
 
   generateNotes: async (pluginConfig, context) => {
     await generateNotes(pluginConfig, context);
     if (branchBuild) {
-      await semanticReleasePrNotes.generateNotes(pluginConfig, context);
+      await semanticReleasePrNotes.generateNotes.pop()(pluginConfig, context);
     }
   },
 
