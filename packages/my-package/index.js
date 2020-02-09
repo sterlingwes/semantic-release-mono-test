@@ -1,1 +1,1 @@
-console.log('this package does nothing!!')
+console.log('this package does nothing!');
