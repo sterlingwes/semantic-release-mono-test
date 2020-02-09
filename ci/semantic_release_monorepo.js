@@ -1,7 +1,6 @@
 const semanticReleaseNpm = require('@semantic-release/npm');
 const semanticReleaseGit = require('@semantic-release/git');
 const semanticReleaseGithub = require('@semantic-release/github');
-const semanticReleasePrNotes = require('semantic-release-github-pr');
 const semanticReleaseChanelog = require('@semantic-release/changelog');
 const { analyzeCommits, generateNotes, tagFormat } = require('semantic-release-monorepo');
 
@@ -36,38 +35,9 @@ const branchBuild = !!process.env.SEMANTIC_RELEASE_PR;
 
 console.log('branch build config:', branchBuild);
 
-const executeSteps = (asyncSteps, pluginConfig, context) =>
-  asyncSteps.reduce(
-    (chain, step) =>
-      chain.then(results => {
-        const result = step(pluginConfig, context);
-        return [...results, result];
-      }),
-    Promise.resolve([]),
-  );
-
 module.exports = {
-  analyzeCommits: async (pluginConfig, context) => {
-    const results = await executeSteps(analyzeCommits, pluginConfig, context);
-    const resolvedResults = await Promise.all(results);
-    if (branchBuild) {
-      await semanticReleasePrNotes.impl.analyzeCommits(pluginConfig, context, resolvedResults);
-    }
-
-    const [releaseType] = resolvedResults.filter(releaseType => !!releaseType);
-    return releaseType;
-  },
-
-  generateNotes: async (pluginConfig, context) => {
-    const results = await executeSteps(generateNotes, pluginConfig, context);
-    const resolvedResults = await Promise.all(results);
-    if (branchBuild) {
-      await semanticReleasePrNotes.impl.generateNotes(pluginConfig, context, resolvedResults);
-    }
-    const [notes] = resolvedResults.filter(notes => !!notes);
-    return notes;
-  },
-
+  analyzeCommits,
+  generateNotes,
   tagFormat,
 
   verifyConditions: async (pluginConfig, context) => {
