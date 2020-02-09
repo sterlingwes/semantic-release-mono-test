@@ -38,26 +38,23 @@ console.log('branch build config:', branchBuild);
 
 const executeSteps = (asyncSteps, pluginConfig, context) =>
   asyncSteps.reduce(
-    (chain, step) => chain.then(() => step(pluginConfig, context)),
+    (chain, step) => chain.then(results => step(pluginConfig, context, results)),
     Promise.resolve(),
   );
 
 module.exports = {
   analyzeCommits: async (pluginConfig, context) => {
-    await executeSteps(analyzeCommits, pluginConfig, context);
-
     if (branchBuild) {
-      console.log('analyzing commits for branch build');
-      await semanticReleasePrNotes.impl.analyzeCommits(pluginConfig, context);
+      analyzeCommits.push(semanticReleasePrNotes.impl.analyzeCommits);
     }
+    return executeSteps(analyzeCommits, pluginConfig, context);
   },
 
   generateNotes: async (pluginConfig, context) => {
-    await executeSteps(generateNotes, pluginConfig, context);
-
     if (branchBuild) {
-      await semanticReleasePrNotes.impl.generateNotes(pluginConfig, context);
+      generateNotes.push(semanticReleasePrNotes.impl.generateNotes);
     }
+    return executeSteps(generateNotes, pluginConfig, context);
   },
 
   tagFormat,
