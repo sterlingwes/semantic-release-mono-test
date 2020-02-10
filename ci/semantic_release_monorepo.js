@@ -22,7 +22,11 @@ const configure = context => ({
   },
 });
 
-const branchBuild = !!process.env.SEMANTIC_RELEASE_PR;
+const commitMessageConfig = pluginConfig => ({
+  ...pluginConfig,
+  assets: ['CHANGELOG.md', 'package.json'],
+  message: `chore(release): ${nextRelease.version}\n\n${nextRelease.notes}`,
+});
 
 /**
  * default semantic-release plugins:
@@ -33,15 +37,13 @@ const branchBuild = !!process.env.SEMANTIC_RELEASE_PR;
  * @semantic-release/github
  */
 
-console.log('branch build config:', branchBuild);
-
 module.exports = {
   analyzeCommits,
   generateNotes,
   tagFormat,
 
   verifyConditions: async (pluginConfig, context) => {
-    semanticReleaseGit.verifyConditions(pluginConfig, context);
+    semanticReleaseGit.verifyConditions(commitMessageConfig(pluginConfig), context);
     await semanticReleaseChanelog.verifyConditions(pluginConfig, context);
     await semanticReleaseNpm.verifyConditions(noPublishNpmConfig(pluginConfig), configure(context));
     await semanticReleaseGithub.verifyConditions(pluginConfig, context);
@@ -50,7 +52,7 @@ module.exports = {
   prepare: async (pluginConfig, context) => {
     await semanticReleaseChanelog.prepare(pluginConfig, context);
     await semanticReleaseNpm.prepare(noPublishNpmConfig(pluginConfig), configure(context));
-    await semanticReleaseGit.prepare(pluginConfig, context);
+    await semanticReleaseGit.prepare(commitMessageConfig(pluginConfig), context);
   },
 
   publish: async (pluginConfig, context) => {

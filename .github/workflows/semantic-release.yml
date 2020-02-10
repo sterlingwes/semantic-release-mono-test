@@ -38,6 +38,9 @@ jobs:
     - name: Install node_modules
       run: yarn install
 
+    - name: Determine commit author
+      run: echo $(git show -s --format='%ae' HEAD)
+
     - name: Perform semantic release
       run: yarn workspaces run semantic-release -e "$GITHUB_WORKSPACE/ci/semantic_release_monorepo.js"
       env:
