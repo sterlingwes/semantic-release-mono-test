@@ -25,7 +25,7 @@ const configure = context => ({
 const commitMessageConfig = pluginConfig => ({
   ...pluginConfig,
   assets: ['CHANGELOG.md', 'package.json'],
-  message: `chore(release): ${nextRelease.version}\n\n${nextRelease.notes}`,
+  message: 'chore(release): ${nextRelease.version}\n\n${nextRelease.notes}',
 });
 
 /**
